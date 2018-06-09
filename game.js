@@ -19,8 +19,6 @@ function start() {
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
-    reset();
-
     function reset() {
         const seed = gameSeed.value;
         window.location.hash = seed;

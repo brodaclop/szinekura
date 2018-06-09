@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Szintologato</title>
+        <title>Szinekura</title>
         <script src="lib/seedrandom.min.js"></script>
         <script src="lib/DragDropTouch.js"></script>
         <script src="colours.js"></script>
@@ -57,16 +57,44 @@
                 display: inline-block;
             }
 
+            #game-form input {
+                font-size:3vw;
+            }
+            #game-form button {
+                font-size:3vw;
+            }
+
+            #game h1 {
+                font-size: 3vw;
+            }
+
+            #game p {
+                font-size:2vw;
+            }
+
 
         </style>
     </head>
     <body onload="start()">
-        <div id="game"></div>
+        <div id="game">
+            <h1>Szinekura</h1>
+            <p>
+                The objective of this game is to minimise the overall colour difference between the squares by dragging the similar ones next to each other.
+            </p>
+            <p>
+                The lower your <b>Score</b>, the better you're doing <i>(yeah, it's that kind of game)</i>, and you can check how your score would change
+                while dragging under <b>Delta</b>.
+            </p>
+            <p>
+                You can start the game by typing in a "board code" and clicking <b>Start</b>. The "board code" can be anything you like – the same code
+                will always give you the same board. This also allows you to replay boards or share particularly tricky ones with your friends. <i>(Which you're unlikely to have if you're playing this game.)</i>
+            </p>
+        </div>
         <div id="scoreDiv">
                 <div class="title">Board</div>
                 <div>
                     <form id="game-form">
-                        <input type="text" id="game-seed"/>
+                        <input type="text" id="game-seed" placeholder="Enter board code here"/>
                         <button id="start">Start</button>
                     </form>
                 </div>
