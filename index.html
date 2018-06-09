@@ -6,23 +6,43 @@
         <script src="state.js"></script>
         <script src="game.js"></script>
         <style>
-            #game {
-                width: 50%;
+
+            body {
+                display: flex;
+                flex-wrap: nowrap;
             }
 
-            #game:after {
-                content: "";
-                display: block;
-                padding-bottom: 100%;
+            body > div {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 0;
+            }
+
+            @media screen and (orientation: portrait) {
+                body {
+                    flex-direction: column;
+                }
+
+                body > div {
+                    height: 50vw;
+                }
+
+            }
+
+            @media screen and (orientation: landscape) {
+                body {
+                    flex-direction: row;
+                }
+
+                body > div {
+                    width: 50vw;
+                }
             }
 
             #scoreDiv {
-                float:right;
-                width: 50%;
                 font-weight: bold;
                 font-size: 5vw;
                 text-align: center;
-                vertical-align: center;
             }
 
             #scoreDiv .title {
@@ -40,12 +60,12 @@
         </style>
     </head>
     <body onload="start()">
-        <div id="scoreDiv">
-            <div class="title">Score</div>
-            <span id="score"></span>
-            <div class="title">Delta</div>
-            <span id="delta"></span>
-        </div>
         <div id="game"></div>
-    </body>
+        <div id="scoreDiv">
+                <div class="title">Score</div>
+                <span id="score"></span>
+                <div class="title">Delta</div>
+                <span id="delta"></span>
+            </div>
+        </body>
 </html>
