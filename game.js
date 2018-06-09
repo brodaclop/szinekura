@@ -62,7 +62,9 @@ function start() {
             deltaBoard.innerText = '---';
         } else {
             const potentialGame = game.swap(source,target);
-            deltaBoard.innerText = (potentialGame.evaluate() - game.evaluate()).toFixed(4);
+            const delta = (potentialGame.evaluate() - game.evaluate());
+            deltaBoard.innerText = delta.toFixed(4);
+            deltaBoard.style["color"] = delta <= 0 ? "#22ff22" : "#ff2222";
         }
     }
 
