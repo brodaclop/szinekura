@@ -1,8 +1,8 @@
 <html>
     <head>
         <title>Szintologato</title>
-        <script src="seedrandom.min.js"></script>
-        <script src="DragDropTouch.js"></script>
+        <script src="lib/seedrandom.min.js"></script>
+        <script src="lib/DragDropTouch.js"></script>
         <script src="colours.js"></script>
         <script src="state.js"></script>
         <script src="game.js"></script>
@@ -63,10 +63,12 @@
     <body onload="start()">
         <div id="game"></div>
         <div id="scoreDiv">
-                <div class="title">Game</div>
+                <div class="title">Board</div>
                 <div>
-                    <input type="text" id="game-seed"/>
-                    <button id="start">Start</button>
+                    <form id="game-form">
+                        <input type="text" id="game-seed"/>
+                        <button id="start">Start</button>
+                    </form>
                 </div>
                 <div class="title">Score</div>
                 <span id="score"></span>

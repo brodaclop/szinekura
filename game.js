@@ -3,7 +3,7 @@ function start() {
     const scoreBoard = document.getElementById("score");
     const deltaBoard = document.getElementById("delta");
     const gameSeed = document.getElementById("game-seed");
-    const start = document.getElementById("start");
+    const gameForm = document.getElementById("game-form");
     const colours = Colours();
     const state = State(6);
 
@@ -15,7 +15,7 @@ function start() {
     document.addEventListener("dragenter", e => e.preventDefault());
     document.addEventListener("dragover", preview);
 
-    start.addEventListener("click", reset);
+    gameForm.addEventListener("submit",reset);
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
