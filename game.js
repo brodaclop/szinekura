@@ -50,7 +50,9 @@ function start() {
 
     function drop(event) {
         const target = event.target.getAttribute("_gameIndex");
-        game = game.swap(source,target);
+        if (!!target) {
+            game = game.swap(source,target);
+        }
         deltaBoard.innerText = '';
         draw();
     }
@@ -60,11 +62,18 @@ function start() {
         const target = event.target.getAttribute("_gameIndex");
         if (!target) {
             deltaBoard.innerText = '---';
+            deltaBoard.style["color"] = "black";
         } else {
             const potentialGame = game.swap(source,target);
             const delta = (potentialGame.evaluate() - game.evaluate());
             deltaBoard.innerText = delta.toFixed(4);
-            deltaBoard.style["color"] = delta <= 0 ? "#22ff22" : "#ff2222";
+            if (delta == 0) {
+                deltaBoard.style["color"] = "black";
+            } else if (delta < 0) {
+                deltaBoard.style["color"] = "#22ff22";
+            } else {
+                deltaBoard.style["color"] = "#ff2222";
+            }
         }
     }
 
