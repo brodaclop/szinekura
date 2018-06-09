@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Szintologato</title>
+        <script src="seedrandom.min.js"></script>
         <script src="DragDropTouch.js"></script>
         <script src="colours.js"></script>
         <script src="state.js"></script>
@@ -41,12 +42,12 @@
 
             #scoreDiv {
                 font-weight: bold;
-                font-size: 5vw;
+                font-size: 4vw;
                 text-align: center;
             }
 
             #scoreDiv .title {
-                font-size: 10vw;
+                font-size: 8vw;
                 font-weight: bold;
             }
 
@@ -62,6 +63,11 @@
     <body onload="start()">
         <div id="game"></div>
         <div id="scoreDiv">
+                <div class="title">Game</div>
+                <div>
+                    <input type="text" id="game-seed"/>
+                    <button id="start">Start</button>
+                </div>
                 <div class="title">Score</div>
                 <span id="score"></span>
                 <div class="title">Delta</div>

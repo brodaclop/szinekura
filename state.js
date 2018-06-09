@@ -80,8 +80,13 @@ function State(size) {
 
     }
 
+    function create(seed) {
+        Math.seedrandom(seed);
+        return init();
+    }
+
     return {
-        create : function() {return init();}
+        create : create
     }
 
 

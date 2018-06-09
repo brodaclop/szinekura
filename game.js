@@ -2,18 +2,31 @@ function start() {
     const board = document.getElementById("game");
     const scoreBoard = document.getElementById("score");
     const deltaBoard = document.getElementById("delta");
+    const gameSeed = document.getElementById("game-seed");
+    const start = document.getElementById("start");
     const colours = Colours();
     const state = State(6);
 
-    let game = state.create();
+    let game;
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
     document.addEventListener("drag", e => e.preventDefault());
     document.addEventListener("dragenter", e => e.preventDefault());
     document.addEventListener("dragover", preview);
-    draw();
 
+    start.addEventListener("click", reset);
+
+    gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
+
+    reset();
+
+    function reset() {
+        const seed = gameSeed.value;
+        window.location.hash = seed;
+        game = state.create(seed);
+        draw();
+    }
 
     function draw() {
         while (board.firstChild) {
