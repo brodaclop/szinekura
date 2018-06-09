@@ -11,7 +11,7 @@ function start() {
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
-    document.addEventListener("drag", e => e.preventDefault());
+    //document.addEventListener("drag", e => e.preventDefault());
     document.addEventListener("dragenter", e => e.preventDefault());
     document.addEventListener("dragover", preview);
 
@@ -45,6 +45,7 @@ function start() {
     let source;
 
     function pickup(event) {
+        event.dataTransfer.setData("nothing", "nothing"); //required by FF
         source = event.target.getAttribute("_gameIndex");
     }
 
