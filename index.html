@@ -1,6 +1,8 @@
 <html>
     <head>
         <title>Szintologato</title>
+        <script src="colours.js"></script>
+        <script src="state.js"></script>
         <script src="game.js"></script>
         <style>
             #game {
@@ -8,7 +10,7 @@
                 height: 90%;
             }
 
-            #score {
+            #scoreDiv {
                 width: 100%;
                 height: 10%;
                 font-weight: bold;
@@ -24,6 +26,9 @@
     </head>
     <body onload="start()">
         <div id="game"></div>
-        <div id="score"></div>
+        <div id="scoreDiv">
+            <span id="score"></span>
+            <span id="delta"></span>
+        </div>
     </body>
 </html>
