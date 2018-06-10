@@ -21,11 +21,12 @@ function start() {
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
-    function reset() {
+    function reset(e) {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
         draw();
+        e.preventDefault();
     }
 
 
@@ -62,7 +63,7 @@ function start() {
         if (!!target) {
             game = game.swap(source,target);
         }
-        deltaBoard.innerText = '';
+        deltaBoard.innerText = '---';
         draw();
     }
 
