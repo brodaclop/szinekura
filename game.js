@@ -64,6 +64,7 @@ function start() {
             game = game.swap(source,target);
         }
         deltaBoard.innerText = '---';
+        deltaBoard.style["color"] = "black";
         draw();
     }
 
