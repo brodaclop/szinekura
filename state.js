@@ -75,7 +75,8 @@ function State(size) {
         return {
             swap : swap,
             evaluate : evaluate,
-            squares : getSquares
+            squares : getSquares,
+            size : size
         }
 
     }

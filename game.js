@@ -4,18 +4,20 @@ function start() {
     const deltaBoard = document.getElementById("delta");
     const gameSeed = document.getElementById("game-seed");
     const gameForm = document.getElementById("game-form");
+//    const autoplayButton = document.getElementById("autoplay");
     const colours = Colours();
     const state = State(6);
+    const autoplayer = Autoplayer();
 
     let game;
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
-    //document.addEventListener("drag", e => e.preventDefault());
     document.addEventListener("dragenter", e => e.preventDefault());
     document.addEventListener("dragover", preview);
 
     gameForm.addEventListener("submit",reset);
+//    autoplayButton.addEventListener("click",autoplay);
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
@@ -23,6 +25,12 @@ function start() {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
+        draw();
+    }
+
+
+    function autoplay() {
+        game = autoplayer.play(game);
         draw();
     }
 
