@@ -1,6 +1,35 @@
 function Autoplayer() {
 
     function play(game) {
+        let result = [];
+        result = result.concat(greedy(game));
+        //result = result.concat(tentative(game));
+        result = result.sort((a,b) => a.score - b.score);
+        return result;
+    }
+
+    function tentative(game) {
+        do {
+            console.log("stepping");
+            const steps = generateAllSteps(game);
+            const score = game.evaluate();
+            const step = chooseSlightlyBetter(score, steps);
+            if (step) {
+                game = step;
+            } else {
+                break;
+            }
+        } while (true);
+
+        return [
+            {
+                name : "Tentative Robot",
+                score : game.evaluate()
+            }
+        ];
+    }
+
+    function greedy(game) {
         const max_shakes = 5;
         let shakes = 0;
 
@@ -12,12 +41,13 @@ function Autoplayer() {
             if (step.evaluate() < game.evaluate()) {
                 game = step;
             } else {
+                deadends.push(game);
                 if (shakes < max_shakes) {
-                    deadends.push(game);
                     shakes++;
                     game = shake(game);
+                } else {
+                    break;
                 }
-                break;
             }
         } while (true);
 
@@ -26,12 +56,24 @@ function Autoplayer() {
 
         deadends.forEach(e => {
             if (e.evaluate() < min) {
-                min = e.evaluate;
+                min = e.evaluate();
                 winner = e;
             }
         });
 
-        return winner;
+
+
+        return [
+            {
+                name: "Greedy Robot",
+                score: deadends[0].evaluate()
+            },
+            {
+                name: "Angry Greedy Robot",
+                score: winner.evaluate()
+            },
+
+        ];
     }
 
     function shake(game) {
@@ -44,12 +86,13 @@ function Autoplayer() {
 
     function generateAllSteps(start) {
         let ret = [];
+        const score = start.evaluate();
         for (let i = 0; i < start.size * start.size; i++) {
             for (let j = i+1; j < start.size * start.size; j++) {
                 let next = start.swap(i,j);
                 ret.push({
                     game : next,
-                    score : next.evaluate()
+                    score : next.evaluate(score)
                 });
             }
         }
@@ -67,6 +110,19 @@ function Autoplayer() {
         });
         return step;
     }
+
+    function chooseSlightlyBetter(baseScore, steps) {
+        let min = 0;
+        let step = null;
+        steps.forEach(e => {
+            if (e.score < baseScore && e.score > min) {
+                step = e.game;
+                min = e.score;
+            }
+        });
+        return step;
+    }
+
 
     function chooseRandom(steps) {
         let idx = Math.floor(Math.random() * steps.length);

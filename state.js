@@ -33,7 +33,8 @@ function State(size) {
 
         function diff(a,b) {
             const hue_diff = calc_hue_diff(a.hue, b.hue);
-            const brightness_diff = (a.brightness - b.brightness) * (a.brightness - b.brightness);
+            //const brightness_diff = (a.brightness - b.brightness) * (a.brightness - b.brightness);
+            const brightness_diff = 0;
             return hue_diff + brightness_diff;
         }
     
@@ -47,7 +48,7 @@ function State(size) {
             return diff * diff;
         }
     
-        function evaluate() {
+        function evaluate(limit) {
             let sum = 0;
             for (let i = 0; i < size; i++) {
                 for (let j = 0; j < size; j++) {
@@ -62,6 +63,9 @@ function State(size) {
                     }
                     if (j < size - 1) {
                         sum += diff(squares[i*size + j], squares[i*size + j + 1]);
+                    }
+                    if (limit && sum > limit) {
+                        return sum; //if we were given a limit, we return partial sum
                     }
                 }
             }

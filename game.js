@@ -4,12 +4,13 @@ function start() {
     const deltaBoard = document.getElementById("delta");
     const gameSeed = document.getElementById("game-seed");
     const gameForm = document.getElementById("game-form");
-//    const autoplayButton = document.getElementById("autoplay");
+    const betterThanField = document.getElementById("better-than");
     const colours = Colours();
     const state = State(6);
     const autoplayer = Autoplayer();
 
     let game;
+    let robotResolts;
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
@@ -25,14 +26,21 @@ function start() {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
+        robotResolts = autoplayer.play(game);
+        console.log(robotResolts);
         draw();
         e.preventDefault();
     }
 
-
-    function autoplay() {
-        game = autoplayer.play(game);
-        draw();
+    function achievement() {
+        const score = game.evaluate();
+        let betterThan = null;
+        robotResolts.forEach(x => {
+            if (score <= x.score) {
+                betterThan = x.name;
+            }
+        });
+        return betterThan;
     }
 
     function draw() {
@@ -41,6 +49,12 @@ function start() {
         }
         game.squares().forEach((x,i) => board.appendChild(createSquareElement(i,x)));
         scoreBoard.innerText = game.evaluate().toFixed(4);
+        const ach = achievement();
+        if (ach == null) {
+            betterThanField.innerHTML = "Keep playing, you can do better!"
+        } else {
+            betterThanField.innerHTML = "You're better than <code>"+ach+"</code>!";
+        }
     }
 
     function createSquareElement(idx, square) {
