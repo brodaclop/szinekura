@@ -1,4 +1,5 @@
-function State(size) {
+function State() {
+    const size = 6;
     const saturation = 0.7;
     const min_brightness = 1;
 
@@ -81,7 +82,6 @@ function State(size) {
             evaluate : evaluate,
             squares : getSquares,
             size : size,
-            __robotCheat : init
         }
 
     }
@@ -92,7 +92,10 @@ function State(size) {
     }
 
     return {
-        create : create
+        create : create,
+        __robotCheat : function (squares) {
+            return init(squares);
+        }
     }
 
 

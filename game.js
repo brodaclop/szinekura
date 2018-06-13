@@ -6,8 +6,7 @@ function start() {
     const gameForm = document.getElementById("game-form");
     const betterThanField = document.getElementById("better-than");
     const colours = Colours();
-    const state = State(6);
-    const autoplayer = Autoplayer();
+    const state = State();
 
     let game;
     let robotResolts = [];
@@ -25,8 +24,12 @@ function start() {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
-        autoplayer.play(game, robotResolts);
-        console.log(robotResolts);
+        const robot = new Worker("robots.js");
+        robot.onmessage = function(e) {
+            robotResolts.push(e.data);
+            console.log("Result received: ", e.data);
+        };
+        robot.postMessage(game.squares());
         draw();
         e.preventDefault();
     }
