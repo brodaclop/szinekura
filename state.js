@@ -80,7 +80,8 @@ function State(size) {
             swap : swap,
             evaluate : evaluate,
             squares : getSquares,
-            size : size
+            size : size,
+            __robotCheat : init
         }
 
     }

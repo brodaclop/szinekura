@@ -10,7 +10,7 @@ function start() {
     const autoplayer = Autoplayer();
 
     let game;
-    let robotResolts;
+    let robotResolts = [];
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
@@ -18,7 +18,6 @@ function start() {
     document.addEventListener("dragover", preview);
 
     gameForm.addEventListener("submit",reset);
-//    autoplayButton.addEventListener("click",autoplay);
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
@@ -26,7 +25,7 @@ function start() {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
-        robotResolts = autoplayer.play(game);
+        autoplayer.play(game, robotResolts);
         console.log(robotResolts);
         draw();
         e.preventDefault();
@@ -35,12 +34,16 @@ function start() {
     function achievement() {
         const score = game.evaluate();
         let betterThan = null;
+        let minScore = 1000;
         robotResolts.forEach(x => {
+            if (x.score < minScore) {
+                minScore = x.score;
+            }
             if (score <= x.score) {
                 betterThan = x.name;
             }
         });
-        return betterThan;
+        return robotResolts.length > 0 && score <= minScore ? "all the robots" : betterThan;
     }
 
     function draw() {
