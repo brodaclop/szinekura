@@ -5,6 +5,7 @@ function start() {
     const gameSeed = document.getElementById("game-seed");
     const gameForm = document.getElementById("game-form");
     const betterThanField = document.getElementById("better-than");
+    const progressField = document.getElementById("progress");
     const colours = Colours();
     const state = State();
 
@@ -28,7 +29,7 @@ function start() {
         robot.onmessage = function(e) {
             robotResults.push(e.data);
             robotResults.sort((a,b) => b.score - a.score);
-            console.log("Result received: ", robotResults);
+            draw();
         };
         robot.postMessage(game.squares());
         draw();
@@ -37,17 +38,17 @@ function start() {
 
     function achievement() {
         const score = game.evaluate();
-        let betterThan = null;
-        let minScore = 1000;
-        robotResults.forEach(x => {
-            if (x.score < minScore) {
-                minScore = x.score;
-            }
+        let betterThan = -1;
+        robotResults.forEach((x,i) => {
             if (score <= x.score) {
-                betterThan = x.name;
+                betterThan = i;
             }
         });
-        return robotResults.length > 0 && score <= minScore ? "all the robots" : betterThan;
+        return {
+            player : betterThan+1,
+            robots : robotResults.length,
+            robotName : betterThan != -1 ? robotResults[betterThan].name : null
+        };
     }
 
     function draw() {
@@ -57,11 +58,15 @@ function start() {
         game.squares().forEach((x,i) => board.appendChild(createSquareElement(i,x)));
         scoreBoard.innerText = game.evaluate().toFixed(4);
         const ach = achievement();
-        if (ach == null) {
+        if (ach.player == 0) {
             betterThanField.innerHTML = "Keep playing, you can do better!"
+        } else if (ach.player < ach.robots) {
+            betterThanField.innerHTML = "You're better than <code>"+ach.robotName+"</code>!";
         } else {
-            betterThanField.innerHTML = "You're better than <code>"+ach+"</code>!";
+            betterThanField.innerHTML = "You've beaten all the robots!";
         }
+        let progressPercent =  ach.robots == 0 ? 0 : ach.player * 100 / ach.robots;
+        progressField.style["width"] = progressPercent+"%";
     }
 
     function createSquareElement(idx, square) {

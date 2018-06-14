@@ -94,13 +94,21 @@
                 }
             }
 
+            #scoreboard {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: row;
+            }
+
+            #scoreboard > div {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 0;
+            }
+
             #scoreDiv {
                 font-weight: bold;
                 text-align: center;
-            }
-
-            #scoreDiv .title {
-                font-weight: bold;
             }
 
             #game div {
@@ -109,6 +117,18 @@
                 display: inline-block;
             }
 
+            #progress-bar {
+                width: 100%;
+                border: 1px solid black;
+                height: 1vw;
+            }
+
+            #progress {
+                width: 0%;
+                height: 100%;
+                overflow: hidden;
+                background-color: black;
+            }
 
 
         </style>
@@ -137,11 +157,20 @@
                     </form>
                     <div id="loadstatus" style="display: none">The robots are playing first.</div>
                 </div>
-                <div class="title">Score</div>
-                <span id="score">---</span>
-                <div id="better-than"></div>
-                <div class="title">Delta</div>
-                <span id="delta">---</span>
+                <div id="scoreboard">
+                    <div>
+                        <div class="title">Score</div>
+                        <span id="score">---</span>
+                    </div>
+                    <div>
+                        <div class="title">Delta</div>
+                        <span id="delta">---</span>
+                    </div>
+                </div>
+                <div>
+                    <div id="better-than"></div>
+                    <div id="progress-bar"><div id="progress">&nbsp;</div></div>
+                </div>
             </div>
         </body>
 </html>
