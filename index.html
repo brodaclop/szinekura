@@ -8,7 +8,7 @@
         <script src="game.js"></script>
         <style>
 
-            body {
+           body {
                 display: flex;
                 flex-wrap: nowrap;
             }
@@ -130,6 +130,16 @@
                 background-color: black;
             }
 
+            #scoreDiv {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+            }
+
+            #achievement-bar {
+                margin-top:auto; 
+                margin-bottom:1vw;
+            }
 
         </style>
     </head>
@@ -167,7 +177,7 @@
                         <span id="delta">---</span>
                     </div>
                 </div>
-                <div>
+                <div id="achievement-bar">
                     <div id="better-than"></div>
                     <div id="progress-bar"><div id="progress">&nbsp;</div></div>
                 </div>
