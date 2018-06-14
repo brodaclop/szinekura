@@ -9,7 +9,7 @@ function start() {
     const state = State();
 
     let game;
-    let robotResolts = [];
+    let robotResults = [];
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
@@ -26,8 +26,9 @@ function start() {
         game = state.create(seed);
         const robot = new Worker("robots.js");
         robot.onmessage = function(e) {
-            robotResolts.push(e.data);
-            console.log("Result received: ", e.data);
+            robotResults.push(e.data);
+            robotResults.sort((a,b) => b.score - a.score);
+            console.log("Result received: ", robotResults);
         };
         robot.postMessage(game.squares());
         draw();
@@ -38,7 +39,7 @@ function start() {
         const score = game.evaluate();
         let betterThan = null;
         let minScore = 1000;
-        robotResolts.forEach(x => {
+        robotResults.forEach(x => {
             if (x.score < minScore) {
                 minScore = x.score;
             }
@@ -46,7 +47,7 @@ function start() {
                 betterThan = x.name;
             }
         });
-        return robotResolts.length > 0 && score <= minScore ? "all the robots" : betterThan;
+        return robotResults.length > 0 && score <= minScore ? "all the robots" : betterThan;
     }
 
     function draw() {
