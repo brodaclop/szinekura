@@ -4,11 +4,17 @@ const state = State();
 
 onmessage = function (e) {
     const game = state.__robotCheat(e.data);
-    postMessage(impatient(game));
-    postMessage(greedy(game));
-    postMessage(simpleton(game));
-    postMessage(tentative(game));
-    postMessage(angry_greedy(game));
+
+    const ROBOTS = {
+        "Impatient": impatient,
+        "Greedy": greedy,
+        "Simpleton": simpleton,
+        "Tentative": tentative,
+        "Angry/Greedy": angry_greedy
+    };
+
+    Object.keys(ROBOTS).forEach(r => postMessage({ name: r, score: null }));
+    Object.values(ROBOTS).forEach(strategy => postMessage(strategy(game)))
     close();
 
     function tentative(game) {
@@ -24,8 +30,8 @@ onmessage = function (e) {
         } while (true);
 
         return {
-            name : "Tentative Robot",
-            score : game.evaluate()
+            name: "Tentative",
+            score: game.evaluate()
         };
     }
 
@@ -63,17 +69,17 @@ onmessage = function (e) {
         });
 
         return {
-                name: "Angry Greedy Robot",
-                score: winner.evaluate()
+            name: "Angry/Greedy",
+            score: winner.evaluate()
         };
     }
 
     function simpleton(game) {
-        let squares =  game.squares().sort((a,b) => a.hue - b.hue);
+        let squares = game.squares().sort((a, b) => a.hue - b.hue);
         game = state.__robotCheat(squares);
         return {
-                name : "Simpleton Robot",
-                score : game.evaluate()
+            name: "Simpleton",
+            score: game.evaluate()
         };
     }
 
@@ -89,7 +95,7 @@ onmessage = function (e) {
         } while (true);
 
         return {
-            name: "Greedy Robot",
+            name: "Greedy",
             score: game.evaluate()
         };
     }
@@ -107,12 +113,10 @@ onmessage = function (e) {
         } while (--steplimit > 0);
 
         return {
-                name: "Impatient Robot",
-                score: game.evaluate()
+            name: "Impatient",
+            score: game.evaluate()
         };
     }
-
-
 
     function shake(game) {
         for (let i = 0; i < 10; i++) {
@@ -126,11 +130,11 @@ onmessage = function (e) {
         let ret = [];
         const score = start.evaluate();
         for (let i = 0; i < start.size * start.size; i++) {
-            for (let j = i+1; j < start.size * start.size; j++) {
-                let next = start.swap(i,j);
+            for (let j = i + 1; j < start.size * start.size; j++) {
+                let next = start.swap(i, j);
                 ret.push({
-                    game : next,
-                    score : next.evaluate(score)
+                    game: next,
+                    score: next.evaluate(score)
                 });
             }
         }

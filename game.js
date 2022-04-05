@@ -4,20 +4,22 @@ function start() {
     const deltaBoard = document.getElementById("delta");
     const gameSeed = document.getElementById("game-seed");
     const gameForm = document.getElementById("game-form");
-    const betterThanField = document.getElementById("better-than");
-    const progressField = document.getElementById("progress");
+    const robotBar = document.getElementById("robot-bar");
     const colours = Colours();
     const state = State();
 
+    let dragSource;
+
+
     let game;
-    let robotResults = [];
+    let robotResults = {};
 
     document.addEventListener("dragstart", pickup);
     document.addEventListener("drop", drop);
     document.addEventListener("dragenter", e => e.preventDefault());
     document.addEventListener("dragover", preview);
 
-    gameForm.addEventListener("submit",reset);
+    gameForm.addEventListener("submit", reset);
 
     gameSeed.value = !!window.location.hash ? window.location.hash.substring(1) : "";
 
@@ -25,10 +27,9 @@ function start() {
         const seed = gameSeed.value;
         window.location.hash = seed;
         game = state.create(seed);
-        const robot = new Worker("robots.js");
-        robot.onmessage = function(e) {
-            robotResults.push(e.data);
-            robotResults.sort((a,b) => b.score - a.score);
+        const robot = new Worker("./robots.js");
+        robot.onmessage = function (e) {
+            robotResults[e.data.name] = e.data.score;
             draw();
         };
         robot.postMessage(game.squares());
@@ -36,58 +37,56 @@ function start() {
         e.preventDefault();
     }
 
-    function achievement() {
-        const score = game.evaluate();
-        let betterThan = -1;
-        robotResults.forEach((x,i) => {
-            if (score <= x.score) {
-                betterThan = i;
+    function addTextDiv(parent, text) {
+        const child = document.createElement("div");
+        child.innerText = text;
+        parent.appendChild(child);
+        return child;
+    }
+
+    function drawRobots(playerScore) {
+        robotBar.innerHTML = "";
+        Object.keys(robotResults).forEach(r => {
+            const robotScore = robotResults[r];
+            const res = document.createElement("div");
+            if (robotScore && playerScore < robotScore) {
+                res.style.color = "#22ff22";
             }
+            addTextDiv(res, r);
+            addTextDiv(res, "🤖");
+            addTextDiv(res, robotResults[r]?.toFixed(4) || "---");
+            robotBar.append(res);
         });
-        return {
-            player : betterThan+1,
-            robots : robotResults.length,
-            robotName : betterThan != -1 ? robotResults[betterThan].name : null
-        };
     }
 
     function draw() {
         while (board.firstChild) {
             board.removeChild(board.firstChild);
         }
-        game.squares().forEach((x,i) => board.appendChild(createSquareElement(i,x)));
-        scoreBoard.innerText = game.evaluate().toFixed(4);
-        const ach = achievement();
-        if (ach.player == 0) {
-            betterThanField.innerHTML = "Keep playing, you can do better!"
-        } else if (ach.player < ach.robots) {
-            betterThanField.innerHTML = "You're better than <code>"+ach.robotName+"</code>!";
-        } else {
-            betterThanField.innerHTML = "You've beaten all the robots!";
-        }
-        let progressPercent =  ach.robots == 0 ? 0 : ach.player * 100 / ach.robots;
-        progressField.style["width"] = progressPercent+"%";
+        game.squares().forEach((x, i) => board.appendChild(createSquareElement(i, x)));
+        const score = game.evaluate();
+        scoreBoard.innerText = score.toFixed(4);
+        drawRobots(score);
     }
 
     function createSquareElement(idx, square) {
         const ret = document.createElement("div");
         ret.setAttribute("_gameIndex", idx);
         ret.setAttribute("draggable", true);
-        ret.style = 'background-color: '+colours.toRGB(square);
+        ret.style = 'background-color: ' + colours.toRGB(square);
         return ret;
     }
 
-    let source;
 
     function pickup(event) {
         event.dataTransfer.setData("nothing", "nothing"); //required by FF
-        source = event.target.getAttribute("_gameIndex");
+        dragSource = event.target.getAttribute("_gameIndex");
     }
 
     function drop(event) {
         const target = event.target.getAttribute("_gameIndex");
         if (!!target) {
-            game = game.swap(source,target);
+            game = game.swap(dragSource, target);
         }
         deltaBoard.innerText = '---';
         deltaBoard.style["color"] = "black";
@@ -101,7 +100,7 @@ function start() {
             deltaBoard.innerText = '---';
             deltaBoard.style["color"] = "black";
         } else {
-            const potentialGame = game.swap(source,target);
+            const potentialGame = game.swap(dragSource, target);
             const delta = (potentialGame.evaluate() - game.evaluate());
             deltaBoard.innerText = delta.toFixed(4);
             if (delta == 0) {

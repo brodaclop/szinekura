@@ -1,186 +1,202 @@
 <html>
-    <head>
-        <title>Szinekura</title>
-        <script src="lib/seedrandom.min.js"></script>
-        <script src="lib/DragDropTouch.js"></script>
-        <script src="colours.js"></script>
-        <script src="state.js"></script>
-        <script src="game.js"></script>
-        <style>
 
-           body {
-                display: flex;
-                flex-wrap: nowrap;
-            }
+<head>
+    <title>Szinekura</title>
+    <script src="lib/seedrandom.min.js"></script>
+    <script src="lib/DragDropTouch.js"></script>
+    <script src="colours.js"></script>
+    <script src="state.js"></script>
+    <script src="game.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: nowrap;
+        }
 
-            body > div {
-                flex-grow: 1;
-                flex-shrink: 1;
-                flex-basis: 0;
-            }
+        #robot-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            font-size: 2vw;
+            justify-content: space-between;
+        }
 
-            @media screen and (orientation: portrait) {
-                body {
-                    flex-direction: column;
-                }
-
-                body > div {
-                    height: 50vw;
-                }
-
-                #scoreDiv {
-                    font-size: 7vw;
-                }
-
-                #scoreDiv .title {
-                    font-size: 12vw;
-                }
-
-                #game-form input {
-                    font-size:5vw;
-                }
-                #game-form button {
-                    font-size:5vw;
-                }
-
-                #game h1 {
-                    font-size: 5vw;
-                }
-
-                #game p {
-                    font-size:3vw;
-                }
-
-                #better-than {
-                    font-size:3vw;
-                }
-            }
-
-            @media screen and (orientation: landscape) {
-                body {
-                    flex-direction: row;
-                }
-
-                body > div {
-                    width: 50vw;
-                }
-
-                #scoreDiv {
-                    font-size: 4vw;
-                }
-
-                #scoreDiv .title {
-                    font-size: 8vw;
-                }
-
-                #game-form input {
-                    font-size:3vw;
-                }
-
-                #game-form button {
-                    font-size:3vw;
-                }
-
-                #game h1 {
-                    font-size: 3vw;
-                }
-
-                #game p {
-                    font-size:2vw;
-                }
-
-                #better-than {
-                    font-size:2vw;
-                }
-            }
-
-            #scoreboard {
-                display: flex;
-                flex-wrap: nowrap;
-                flex-direction: row;
-            }
-
-            #scoreboard > div {
-                flex-grow: 1;
-                flex-shrink: 1;
-                flex-basis: 0;
-            }
-
-            #scoreDiv {
-                font-weight: bold;
-                text-align: center;
-            }
-
-            #game div {
-                width: 16%;
-                height: 16%;
-                display: inline-block;
-            }
-
-            #progress-bar {
-                width: 100%;
-                border: 1px solid black;
-                height: 1vw;
-            }
-
-            #progress {
-                width: 0%;
-                height: 100%;
-                overflow: hidden;
-                background-color: black;
-            }
-
-            #scoreDiv {
-                display: flex;
-                flex-wrap: nowrap;
+        @media screen and (orientation: portrait) {
+            body {
                 flex-direction: column;
             }
 
-            #achievement-bar {
-                margin-top:auto; 
-                margin-bottom:1vw;
+            #scoreDiv {
+                font-size: 7vw;
             }
 
-        </style>
-    </head>
-    <body onload="start()">
-        <div id="game">
-            <h1>Szinekura</h1>
-            <p>
-                The objective of this game is to minimise the overall colour difference between the squares by dragging the similar ones next to each other.
-            </p>
-            <p>
-                The lower your <b>Score</b>, the better you're doing <i>(yeah, it's that kind of game)</i>, and you can check how your score would change
-                while dragging under <b>Delta</b>.
-            </p>
-            <p>
-                You can start the game by typing in a "board code" and clicking <b>Start</b>. The "board code" can be anything you like – the same code
-                will always give you the same board. This also allows you to replay boards or share particularly tricky ones with your friends. <i>(Which you're unlikely to have if you're playing this game.)</i>
-            </p>
+            #scoreDiv .title {
+                font-size: 12vw;
+            }
+
+            #game-form input {
+                font-size: 5vw;
+            }
+
+            #game-form button {
+                font-size: 5vw;
+            }
+
+            #game h1 {
+                font-size: 5vw;
+            }
+
+            #game p {
+                font-size: 2vw;
+            }
+
+            #better-than {
+                font-size: 3vw;
+            }
+
+            #game div {
+                width: 15vw;
+                height: 15vw;
+                display: inline-block;
+            }
+        }
+
+        @media screen and (orientation: landscape) {
+            body {
+                flex-direction: row;
+            }
+
+            body>div {
+                width: 50vw;
+            }
+
+            #scoreDiv {
+                font-size: 4vw;
+            }
+
+            #scoreDiv .title {
+                font-size: 8vw;
+            }
+
+            #game-form input {
+                font-size: 3vw;
+            }
+
+            #game-form button {
+                font-size: 3vw;
+            }
+
+            #game h1 {
+                font-size: 3vw;
+            }
+
+            #game p {
+                font-size: 1.4vw;
+            }
+
+            #better-than {
+                font-size: 2vw;
+            }
+
+            #game div {
+                width: 8vw;
+                height: 8vw;
+                display: inline-block;
+            }
+        }
+
+        #scoreboard {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+        }
+
+        #scoreboard>div {
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0;
+        }
+
+        #scoreDiv {
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #progress-bar {
+            width: 100%;
+            border: 1px solid black;
+            height: 1vw;
+        }
+
+        #progress {
+            width: 0%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        #scoreDiv {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+
+        #achievement-bar {
+            margin-top: auto;
+            margin-bottom: 1vw;
+        }
+    </style>
+</head>
+
+<body onload="start()">
+    <div id="game">
+        <h1>Szinekura</h1>
+        <p>What is Szinekura? It's just Hungarian for "sinecure", which according to the dictionary is "a position
+            requiring
+            little or no work but giving the holder status or financial benefit." It is also a sort of pun, as if you
+            squint hard,
+            it can also mean "lord of the colours". Oh, you meant what this game was? Sorry</p>
+        <p>
+            The objective of this game is to drag squares of similar colour next to each other.
+        </p>
+        <p>
+            The lower your <b>Score</b>, the better you're doing <i>(yeah, it's that kind of game)</i>, and <b>Delta</b>
+            shows how your score would change if you were to drop the square you're dragging at its current position.
+        </p>
+        <p>
+            You can start the game by typing in a "board code" and clicking <b>Start</b>. "Board code" is a very
+            official-soounding word for basically anything you like – and the same code will always give you the same
+            board.
+            This also allows you to replay your favourite boards or share particularly tricky ones
+            with your friends. <i>(Which you're unlikely to have if you have favourite boards.)</i>
+        </p>
+    </div>
+    <div id="scoreDiv">
+        <div class="title">Board</div>
+        <div>
+            <form id="game-form">
+                <input type="text" id="game-seed" placeholder="Enter board code here" />
+                <button id="start">Start</button>
+            </form>
+            <div id="loadstatus" style="display: none">The robots are playing first.</div>
         </div>
-        <div id="scoreDiv">
-                <div class="title">Board</div>
-                <div>
-                    <form id="game-form">
-                        <input type="text" id="game-seed" placeholder="Enter board code here"/>
-                        <button id="start">Start</button>
-                    </form>
-                    <div id="loadstatus" style="display: none">The robots are playing first.</div>
-                </div>
-                <div id="scoreboard">
-                    <div>
-                        <div class="title">Score</div>
-                        <span id="score">---</span>
-                    </div>
-                    <div>
-                        <div class="title">Delta</div>
-                        <span id="delta">---</span>
-                    </div>
-                </div>
-                <div id="achievement-bar">
-                    <div id="better-than"></div>
-                    <div id="progress-bar"><div id="progress">&nbsp;</div></div>
-                </div>
+        <div id="scoreboard">
+            <div>
+                <div class="title">Score</div>
+                <span id="score">---</span>
             </div>
-        </body>
+            <div>
+                <div class="title">Delta</div>
+                <span id="delta">---</span>
+            </div>
+        </div>
+        <div>Opponents</div>
+        <div id="robot-bar">
+        </div>
+    </div>
+</body>
+
 </html>
